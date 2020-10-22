@@ -19,9 +19,8 @@ head(Total_death,10)
 Sig_Eqs %>%
   select(YEAR,EQ_PRIMARY) %>%
   filter(EQ_PRIMARY >= 6) %>%
-  mutate(number = 1) %>%
   group_by(YEAR) %>%
-  summarize(sum = sum(number)) %>%  
+  summarize(sum = n()) %>%  
   ggplot(aes(x=YEAR, y=sum)) + 
   geom_line()
 ## 1.4
