@@ -3,7 +3,7 @@ library(tidyr)
 library(dplyr)
 library(ggplot2)
 data <- read.csv("SAC CITY.csv",T)
-#3.1 Êı¾İµÄÔ¤´¦Àí
+#3.1 æ•°æ®çš„é¢„å¤„ç†
 data1 <- data %>%
   filter(PRCP >= 0)%>%
   mutate(date1 = as.Date(DATE))
@@ -12,18 +12,18 @@ data1  %>%
   ggplot(aes(x=date1, y=PRCP)) + 
   geom_line()  
 #3.3
-##×î´ó½µË®Á¿ÓëËùÔÚµÄÈÕÆÚ
+##æœ€å¤§é™æ°´é‡ä¸æ‰€åœ¨çš„æ—¥æœŸ
 data1 %>%
   select(date1,PRCP) %>%
   filter(PRCP == max(PRCP))
-##ÄêÆ½¾ù½µË®Á¿
+##å¹´å¹³å‡é™æ°´é‡
 Total_PRCP <- data1 %>%
   mutate(YEAR = as.numeric(substr(DATE,1,4))) %>%
   group_by(YEAR) %>%
   summarize(total_PRCP = sum(PRCP)) 
 Total_PRCP %>%                            
   summarize(mean(total_PRCP))
-##ÄêÆ½¾ù½µË®ÌìÊı
+##å¹´å¹³å‡é™æ°´å¤©æ•°
 Total_number <- data1 %>%
   filter(PRCP > 0) %>%
   mutate(YEAR = as.numeric(substr(DATE,1,4))) %>%
@@ -32,9 +32,9 @@ Total_number <- data1 %>%
   summarize(total_number = sum(frequency)) 
 Total_number %>%                         
   summarize(mean(total_number))
-##ÓÃÃ¿Äê½µË®ÌìÊıºÍÄêÆ½¾ù½µË®Á¿»æÍ¼
+##ç”¨æ¯å¹´é™æ°´å¤©æ•°å’Œå¹´å¹³å‡é™æ°´é‡ç»˜å›¾
 left_join(Total_PRCP,Total_number,by="YEAR")  %>%  
   ggplot(aes(x=total_PRCP, y=total_number)) + 
   geom_point()  
 
- 
+ #good work
