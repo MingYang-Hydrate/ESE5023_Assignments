@@ -6,14 +6,18 @@ library(ggplot2)
 Sig_Eqs <- read.table("signif.txt",header = TRUE,sep = "\t",quote = "")
 Sig_Eqs <- as_tibble(Sig_Eqs)
 ## 1.2
-##ÇóËÀÍöÈËÊý£¬½µÐòÅÅÁÐ
+##æ±‚æ­»äº¡äººæ•°ï¼Œé™åºæŽ’åˆ—
 Total_death <- Sig_Eqs %>%
   select(COUNTRY,TOTAL_DEATHS)%>%
   filter(TOTAL_DEATHS != "NA")%>%
   group_by(COUNTRY) %>%
   summarize(total_number = sum(TOTAL_DEATHS)) %>%
+#@MingYANG recommended:
+# using "summarize(total_number=sum(DEATHS,na.rm=T)) " in line 14 %>%
+# has the same effect with combination of line 12 and line 14 in your code
+
   arrange(desc(total_number))
-##¶ÁÇ°Ê®ÁÐ
+##è¯»å‰ååˆ—
 head(Total_death,10)
 ## 1.3
 Sig_Eqs %>%
@@ -24,7 +28,7 @@ Sig_Eqs %>%
   ggplot(aes(x=YEAR, y=sum)) + 
   geom_line()
 ## 1.4
-##´´½¨º¯Êý
+##åˆ›å»ºå‡½æ•°
 CountEq_LargestEq <- function(country){
   Country_Data <- Sig_Eqs %>%
     filter( COUNTRY == country)
@@ -36,7 +40,7 @@ CountEq_LargestEq <- function(country){
   result <- c(country,nrow(Country_Data),as.character(a))
   result
 }
-##µ¼³öËùÓÐ¹ú¼Ò
+##å¯¼å‡ºæ‰€æœ‰å›½å®¶
 Country <- Sig_Eqs %>%
   select(COUNTRY) %>%
   mutate(xyz = 1) %>%
@@ -47,7 +51,7 @@ Country1 <- c()
 for (ii in 1:nrow(Country)) {
   Country1[ii] = as.character(Country[ii,1])
 }
-##Êä³ö½á¹û
+##è¾“å‡ºç»“æžœ
 result1 <- matrix(NA,155,3)
 for (jj in 1:nrow(Country)) {
   result1[jj,] = CountEq_LargestEq(Country1[jj])
@@ -58,4 +62,4 @@ result1 %>%
   select(country,time_EQ,date_EQ) %>%
   arrange(desc(time_EQ))
 
-
+# good work
