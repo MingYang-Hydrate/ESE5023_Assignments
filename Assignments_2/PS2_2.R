@@ -7,16 +7,23 @@ Original_data <- as_tibble(Original_data)
 Original_data %>%
   select(WND,DATE) %>%
   mutate(WND_data = as.numeric(substr(WND,9,12))) %>%   
-  #WND_dataÎª·çËÙ
+  #WND_dataä¸ºé£Žé€Ÿ
   mutate(WND_control = as.numeric(substr(WND,14,14))) %>%  
-  ##WND_controlÎª·çËÙµÄÖÊÁ¿¿ØÖÆ
+  ##WND_controlä¸ºé£Žé€Ÿçš„è´¨é‡æŽ§åˆ¶
   mutate(month = substr(DATE,1,7)) %>%            
-  ##monthÖ»±£ÁôÄêºÍÔÂ
+  ##monthåªä¿ç•™å¹´å’Œæœˆ
   filter(WND_control == 0 |WND_control == 1|WND_control ==4|WND_control ==5)%>%
+# @MingYANG noticed:
+# (1)using "WND_control == 1" is enough
+# additional filter should be added concerning POS 85-86, that is"(substr(WND,5,7))" for controling distance quality and variability
+# and "substr(WND,5,7)" should be "1,N"
+# (2)wind speed has the SCALING FACTOR of 10, so the the true wind speed is 10 times smaller than original data in this csv file.
+# multiply 0.1 is needed
+# the end
   group_by(month) %>%
   summarize(OBS_wind_speed = mean(WND_data)) %>%
   mutate(OBS_time = as.Date(paste0(month,"-01"))) %>%  
-  ##½«×Ö·û´®month×ª»¯ÎªÊ±¼ä
+  ##å°†å­—ç¬¦ä¸²monthè½¬åŒ–ä¸ºæ—¶é—´
   select(OBS_time,OBS_wind_speed) %>%  
   ggplot(aes(x=OBS_time, y=OBS_wind_speed)) + 
   geom_line()
