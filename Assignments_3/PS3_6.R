@@ -2,7 +2,7 @@ library(MASS)
 library(leaps)
 data(cpus)
 data3_6 <- cpus
-#·Ö×é£¨ÑµÁ·×éºÍ²âÊÔ×é£©
+#åˆ†ç»„ï¼ˆè®­ç»ƒç»„å’Œæµ‹è¯•ç»„ï¼‰
 sample_index <- sample(nrow(data3_6),nrow(data3_6)*0.80)
 cpus_train <- data3_6[sample_index,]
 cpus_test  <- data3_6[-sample_index,]
@@ -33,16 +33,16 @@ model_step_s <-
     scope = list(lower = nullmodel, upper = fullmodel),
     direction = 'both'
   )
-#Òò´Ë×î¼Ñ×Ó¼¯»Ø¹éÎªsyct£¬mmin£¬mmax£¬cachºÍchmax
+#å› æ­¤æœ€ä½³å­é›†å›žå½’ä¸ºsyctï¼Œmminï¼Œmmaxï¼Œcachå’Œchmax
 
 #3.6.2
-#ÏßÐÔÄâºÏ
+#çº¿æ€§æ‹Ÿåˆ
 trainmodel3_6  <- lm(perf ~ syct+ mmin + mmax + cach +
                     chmin + chmax, data=cpus_train)
 summary(trainmodel3_6)
-#Ó¦ÓÃÓÚ²âÊÔ×é
+#åº”ç”¨äºŽæµ‹è¯•ç»„
 cups_predict <- predict(trainmodel3_6 ,cpus_test)
-#ÄâºÏÐ§¹û
+#æ‹Ÿåˆæ•ˆæžœ
 plot(cpus_test$perf, cups_predict)
 cor(cpus_test$perf, cups_predict)
 mean(cpus_test$perf)
@@ -50,3 +50,4 @@ mean(cups_predict)
 (mean(cups_predict) - mean(cpus_test$perf))/
   mean(cpus_test$perf)*100
 
+# good work
