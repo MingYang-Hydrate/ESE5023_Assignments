@@ -1,4 +1,4 @@
-#Êı¾İÕûÀí
+#æ•°æ®æ•´ç†
 Unseeded_rainfall <- c(1202.6, 830.1, 372.4, 345.5, 321.2, 244.3, 163.0, 147.8, 95.0, 87.0, 81.2, 68.5, 47.3, 41.1, 36.6, 29.0, 28.6, 26.3, 26.0, 24.4, 21.4, 17.3, 11.5, 4.9, 4.9, 1.0);
 Seeded_rainfall <- c(2745.6, 1697.1, 1656.4, 978.0, 703.4, 489.1, 430.0, 334.1, 302.8, 274.7, 274.7, 255.0, 242.5, 200.7, 198.6, 129.6, 119.0, 118.3, 115.3, 92.4, 40.6, 32.7, 31.4, 17.5, 7.7, 4.1) 
 f <- factor(rep(c("Unseeded_rainfall","Seeded_rainfall"), each=26)) 
@@ -12,7 +12,18 @@ par(mfrow=c(1,2))
 #https://blog.csdn.net/never0822/article/details/81384235
 hist(Unseeded_rainfall)
 hist(Seeded_rainfall)
-#¿ÉÒÔ·¢ÏÖÁ½×éÊı¾İ¾ù²»ÊÇÕıÌ¬·Ö²¼£¬Òò´ËÊ¹ÓÃANOVA
+#å¯ä»¥å‘ç°ä¸¤ç»„æ•°æ®å‡ä¸æ˜¯æ­£æ€åˆ†å¸ƒï¼Œå› æ­¤ä½¿ç”¨ANOVA
 anova_one_way3_1 <- aov(Rainfall ~ f,data = data3_1)
 summary(anova_one_way3_1)
-#0.0511>0.05£¬Òò´ËÓĞ90%µÄ¸ÅÂÊÈÏÎªÕâÁ½×é½µË®Êı¾İ´æÔÚ²îÒì
+#0.0511>0.05ï¼Œå› æ­¤æœ‰90%çš„æ¦‚ç‡è®¤ä¸ºè¿™ä¸¤ç»„é™æ°´æ•°æ®å­˜åœ¨å·®å¼‚
+
+# MingYANG recommendedï¼š
+# try the following brief code if you want to add data automatically
+Unseeded <- c(1202.6, 830.1, 372.4, 345.5, 321.2, 244.3, 163.0, 147.8, 95.0, 87.0, 81.2, 68.5, 47.3, 41.1, 36.6, 29.0, 28.6, 26.3, 26.0, 24.4, 21.4, 17.3, 11.5, 4.9, 4.9, 1.0)
+Seeded <- c(2745.6, 1697.1, 1656.4, 978.0, 703.4, 489.1, 430.0, 334.1, 302.8, 274.7, 274.7, 255.0, 242.5, 200.7, 198.6, 129.6, 119.0, 118.3, 115.3, 92.4, 40.6, 32.7, 31.4, 17.5, 7.7, 4.1)
+
+rainfall <- cbind(Unseeded,Seeded)
+data <- data.frame(rainfall)
+boxplot(rainfall,width=c(1,2),col=c(2,7),border=c("purple","black"))
+t.test(Unseeded,Seeded) # or anova
+# the end
