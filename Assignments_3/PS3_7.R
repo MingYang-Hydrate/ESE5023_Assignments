@@ -3,17 +3,17 @@ library(ggplot2)
 library(dplyr)
 library(tidyr)
 
-#CuÎªÄ³Í­Î²¿ó¿â0.1mºÍ1m¿óÔüÖĞµÄÍ­Å¨¶È
+#Cuä¸ºæŸé“œå°¾çŸ¿åº“0.1må’Œ1mçŸ¿æ¸£ä¸­çš„é“œæµ“åº¦
 Cu <- read.csv('Cu.csv',header = T,encoding = "UTF-8")
 colnames(Cu) <- c('0.1m','1m')
 
-#dischargeÎªsac cityË®ÎÄ¹Û²âÕ¾µÄ±±ä½ĞÜºÓ¾¶Á÷Êı¾İºÍ¸ÃµØµÄ½µÓêÁ¿Êı¾İ
+#dischargeä¸ºsac cityæ°´æ–‡è§‚æµ‹ç«™çš„åŒ—æµ£ç†Šæ²³å¾„æµæ•°æ®å’Œè¯¥åœ°çš„é™é›¨é‡æ•°æ®
 discharge <- read.csv('discharge.csv',header = T)
 
-#PRCPÎªrockwell cityµÄ½µÓêÁ¿Êı¾İ
+#PRCPä¸ºrockwell cityçš„é™é›¨é‡æ•°æ®
 PRCP <- read.csv('ROCKWELL CITY.csv')
 
-#Êı¾İµÄÔ¤´¦Àí
+#æ•°æ®çš„é¢„å¤„ç†
 #discharge
 discharge <- as_tibble(discharge)
 discharge1 <- discharge %>%
@@ -26,15 +26,15 @@ PRCP1 <- PRCP %>%
   select(PRCP) %>%
   mutate(f = "rockwell")
 
-#3.7.1 Í­Î²¿ó¿â0.1mºÍ1mÉîµÄ¿óÔüÖĞ£¬Í­Å¨¶ÈÓĞ²î±ğÂğ
+#3.7.1 é“œå°¾çŸ¿åº“0.1må’Œ1mæ·±çš„çŸ¿æ¸£ä¸­ï¼Œé“œæµ“åº¦æœ‰å·®åˆ«å—
 par(mfrow=c(1,2))
 hist(Cu[,1])
 hist(Cu[,2])
 t.test(Cu[,1] , Cu[,2])
-#¿ÉÒÔÈÏÎª0.1mºÍ1mÉîµÄCuÅ¨¶ÈÎŞ²î±ğ
+#å¯ä»¥è®¤ä¸º0.1må’Œ1mæ·±çš„Cuæµ“åº¦æ— å·®åˆ«
 
-#3.7.2 sac cityºÍÍ¬Î³¶ÈµÄrockwell cityµÄ½µÓêÓĞ²î±ğÂğ
-#¶ÔÊı¾İ½øÒ»²½ÕûÀí
+#3.7.2 sac cityå’ŒåŒçº¬åº¦çš„rockwell cityçš„é™é›¨æœ‰å·®åˆ«å—
+#å¯¹æ•°æ®è¿›ä¸€æ­¥æ•´ç†
 discharge2 <- discharge1 %>%
   select(PRCP.inch.SAC.CITY) %>%
   mutate(f = "sac")
@@ -44,19 +44,21 @@ s_r[4384:8728,] <- PRCP1[1:4345,]
 colnames(s_r) <- c('PRCP','f')
 s_r1 <- s_r %>%
   mutate(f = as.factor(f))
-#·½²î·ÖÎö
+#æ–¹å·®åˆ†æ
 anova_one_way3_7 <- aov(PRCP ~ f,data = s_r)
 summary(anova_one_way3_7)
-#¿ÉÒÔÈÏÎªÁ½Õß½µË®ÎŞÏÔÖø²îÒì
+#å¯ä»¥è®¤ä¸ºä¸¤è€…é™æ°´æ— æ˜¾è‘—å·®å¼‚
 
-#3.7.3 sac cityµÄ½µÓêÁ¿Óë±±ä½ĞÜºÓ¾¶Á÷Á÷Á¿Ö®¼ä´æÔÚÏßĞÔ¹ØÏµÂğ
-#Á½×éÊı¾İµÄÖ±·½Í¼
+#3.7.3 sac cityçš„é™é›¨é‡ä¸åŒ—æµ£ç†Šæ²³å¾„æµæµé‡ä¹‹é—´å­˜åœ¨çº¿æ€§å…³ç³»å—
+#ä¸¤ç»„æ•°æ®çš„ç›´æ–¹å›¾
 par(mfrow=c(1,2))
 hist(discharge1$Dischrge.ft3.s)
 hist(discharge1$PRCP.inch.SAC.CITY)
-#É¢µãÍ¼¼°ÏßĞÔÄâºÏ
+#æ•£ç‚¹å›¾åŠçº¿æ€§æ‹Ÿåˆ
 plot(Dischrge.ft3.s ~ PRCP.inch.SAC.CITY,data = discharge1)
 fit3_7 <- lm(Dischrge.ft3.s ~ PRCP.inch.SAC.CITY,data = discharge1)
 summary(fit3_7)
 abline(fit3_7,lwd = 2, col = "red")
-#ÏßĞÔ¹ØÏµ²¢²»ÊÇºÜºÃ
+#çº¿æ€§å…³ç³»å¹¶ä¸æ˜¯å¾ˆå¥½
+
+# good work 
