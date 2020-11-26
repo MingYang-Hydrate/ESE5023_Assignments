@@ -1,11 +1,13 @@
-#Êı¾İÕûÀí
+#æ•°æ®æ•´ç†
 Elevation <- c(180, 305, 381, 488, 549, 640, 762, 883)
 Temperature <- c(13.3, 12.2, 13.3, 10.0, 8.3, 9.4, 8.3, 7.2)
 data3_4 <- data.frame(Elevation, Temperature)
-#»æÉ¢µãÍ¼¼°ÏßĞÔ»Ø¹é
+#ç»˜æ•£ç‚¹å›¾åŠçº¿æ€§å›å½’
 plot(Temperature ~ Elevation, data = data3_4)
 Atmospheric_Lapse_Rate <-
   lm(Temperature ~ Elevation, data = data3_4)
 abline(Atmospheric_Lapse_Rate, col = "red")
 summary(Atmospheric_Lapse_Rate)
-#µÃµ½ÆøÎÂÖ±¼õÂÊÎª-9.312¡æ/Km
+#å¾—åˆ°æ°”æ¸©ç›´å‡ç‡ä¸º-9.312â„ƒ/Km
+
+# good work
