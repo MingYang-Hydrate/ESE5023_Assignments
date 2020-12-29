@@ -1,12 +1,12 @@
 setwd('C:/Users/ping ping/Desktop/Assignment/Assignment_04_hzp')
-#Êı¾İÈ±ÉÙÒ»²¿·Ö¾ÅÔÂµÄÖµºÍÈ«²¿Ê®ÔÂÖµ£¬ÏÂÔØÕâĞ©Êı¾İ²¢²¹³äÔÚ2281305.csvÖĞ
+#æ•°æ®ç¼ºå°‘ä¸€éƒ¨åˆ†ä¹æœˆçš„å€¼å’Œå…¨éƒ¨åæœˆå€¼ï¼Œä¸‹è½½è¿™äº›æ•°æ®å¹¶è¡¥å……åœ¨2281305.csvä¸­
 data4_2 <- read.csv('2281305.csv',header = T)
 library(ggplot2)
 library(dplyr)
 library(tidyr)
 library(lubridate)
 library(forecast)
-#ÕûÀíÊı¾İ£¬±£ÁôÈÕÆÚ£¨monthly£©ºÍÔÂÆ½¾ùÎÂ¶È£¨¡æ£©
+#æ•´ç†æ•°æ®ï¼Œä¿ç•™æ—¥æœŸï¼ˆmonthlyï¼‰å’Œæœˆå¹³å‡æ¸©åº¦ï¼ˆâ„ƒï¼‰
 data4_21 <- data4_2 %>%
   mutate(tem = as.numeric(substr(TMP,2,5))) %>%
   filter(tem != 9999) %>%
@@ -23,31 +23,31 @@ plot(TMP)
 #4.2.2 Decompose the time series
 TMP_components <- decompose(TMP)
 plot(TMP_components)
-# »æÖÆÖ±·½Í¼
+# ç»˜åˆ¶ç›´æ–¹å›¾
 hist(TMP_components$random, prob=TRUE,ylim = c(0,0.4))
-# Ìí¼Ópdf
+# æ·»åŠ pdf
 curve(dnorm(x, mean=mean(TMP_components$random,na.rm=T),
             sd=sd(TMP_components$random,na.rm=T)),
       add=TRUE, col="red")
 #Box.test : https://blog.csdn.net/qq_36810398/article/details/88876429
 Box.test(TMP_components$random,type='Ljung-Box')
-# p-value = 0.01904 < 0.05, ×ñÑ­¸ßË¹°×ÔëÉù·Ö²¼
+# p-value = 0.01904 < 0.05, éµå¾ªé«˜æ–¯ç™½å™ªå£°åˆ†å¸ƒ
 
 #4.2.3 ARIMA model
 acf(TMP)
 pacf(TMP)
-#¿ÉÒÔ·¢ÏÖTMPÊÇÆ½ÎÈµÄ,¿ÉÒÔ²»½øĞĞ²î·Ö
+#å¯ä»¥å‘ç°TMPæ˜¯å¹³ç¨³çš„,å¯ä»¥ä¸è¿›è¡Œå·®åˆ†
 
-#ÀûÓÃauto.arima()½¨Ä£
+#åˆ©ç”¨auto.arima()å»ºæ¨¡
 model <- auto.arima(TMP)
 model
-#µÃµ½µÄÄ£ĞÍÎªARIMA(0,0,2)(1,1,1)[12]
+#å¾—åˆ°çš„æ¨¡å‹ä¸ºARIMA(0,0,2)(1,1,1)[12]
 
-#¸ÃÄ£ĞÍµÄÍÆµ¼¹ı³ÌÈçÏÂ£¬ÍÆµ¼¹ı³ÌÓëÍõ³¬Í¬Ñ§½øĞĞÁËÌÖÂÛ
+#è¯¥æ¨¡å‹çš„æ¨å¯¼è¿‡ç¨‹å¦‚ä¸‹ï¼Œæ¨å¯¼è¿‡ç¨‹ä¸ç‹è¶…åŒå­¦è¿›è¡Œäº†è®¨è®º
 
-#µÚÒ»×é²ÎÊı(0,0,2)´ú±íÈ¥³ı¼¾½ÚĞÔµÄARIMAÄ£ĞÍ£¬ÊÇÂú×ãp = 0:5,q = 0:5,d = 0:2µÄÌõ¼şÏÂ»ñµÃËùÓĞÄ£ĞÍÖĞ£¬AIC×îĞ¡µÄÄÇ¸ö,¿ÉÒÔÍ¨¹ıÒÔÏÂ·½·¨ÑéÖ¤
-#AIC×îĞ¡µÄÔ­ÔòÀ´×ÔÓÚÖªºõ£¬µ«Ò³Ãæ¹Ø±ÕºóÎŞ·¨ÕÒ»ØÔ­ÍøÖ·ÁË
-#p£¬qÈ¡Öµ¾ùÎª0:5;ÓÉÓÚTMPÊÇÆ½ÎÈµÄ£¬Òò´Ëd = 0:2,·ñÔòÒª¸ù¾İ²î·ÖÇé¿öÈ·¶¨dµÄÈ¡Öµ
+#ç¬¬ä¸€ç»„å‚æ•°(0,0,2)ä»£è¡¨å»é™¤å­£èŠ‚æ€§çš„ARIMAæ¨¡å‹ï¼Œæ˜¯æ»¡è¶³p = 0:5,q = 0:5,d = 0:2çš„æ¡ä»¶ä¸‹è·å¾—æ‰€æœ‰æ¨¡å‹ä¸­ï¼ŒAICæœ€å°çš„é‚£ä¸ª,å¯ä»¥é€šè¿‡ä»¥ä¸‹æ–¹æ³•éªŒè¯
+#AICæœ€å°çš„åŸåˆ™æ¥è‡ªäºçŸ¥ä¹ï¼Œä½†é¡µé¢å…³é—­åæ— æ³•æ‰¾å›åŸç½‘å€äº†
+#pï¼Œqå–å€¼å‡ä¸º0:5;ç”±äºTMPæ˜¯å¹³ç¨³çš„ï¼Œå› æ­¤d = 0:2,å¦åˆ™è¦æ ¹æ®å·®åˆ†æƒ…å†µç¡®å®šdçš„å–å€¼
 TMP_adjust <- TMP - TMP_components$seasonal
 aic <- matrix(NA,6*3*6,2)
 n =1
@@ -65,14 +65,14 @@ min_aic <- which(aic[,1]==min(aic[,1]))
 aic[min_aic,]
 
 
-#µÚ¶ş×é²ÎÊı(1,1,1)[12]´ú±í¼¾½ÚĞÔ£¬ÊÇÒ»¸öÖÜÆÚĞÔÑ­»·µÄÊ±¼äĞòÁĞ£¬¿ÉÒÔÍ¨¹ıÒÔÏÂ·½·¨ÑéÖ¤
-#²Î¿¼ÁËhttps://blog.csdn.net/tantaixf/article/details/83148901
-#ÒÑÖª¼¾½ÚĞÔµÄÖÜÆÚÎª12£¬Òò´Ë¶ÔÔ­Êı¾İ½øĞĞ²î·Ö£¬¼ä¸ôÎª12
+#ç¬¬äºŒç»„å‚æ•°(1,1,1)[12]ä»£è¡¨å­£èŠ‚æ€§ï¼Œæ˜¯ä¸€ä¸ªå‘¨æœŸæ€§å¾ªç¯çš„æ—¶é—´åºåˆ—ï¼Œå¯ä»¥é€šè¿‡ä»¥ä¸‹æ–¹æ³•éªŒè¯
+#å‚è€ƒäº†https://blog.csdn.net/tantaixf/article/details/83148901
+#å·²çŸ¥å­£èŠ‚æ€§çš„å‘¨æœŸä¸º12ï¼Œå› æ­¤å¯¹åŸæ•°æ®è¿›è¡Œå·®åˆ†ï¼Œé—´éš”ä¸º12
 TMP_components$seasonal
 TMP1 <- diff(TMP,12)
 acf(TMP1)
 pacf(TMP1)
-#Í¨¹ıÈâÑÛ¿ÉÒÔ¿´³ö£¬P=1,Q=1£¬diff()Ö»½øĞĞÁËÒ»´Î£¬Òò´ËD=1
+#é€šè¿‡è‚‰çœ¼å¯ä»¥çœ‹å‡ºï¼ŒP=1,Q=1ï¼Œdiff()åªè¿›è¡Œäº†ä¸€æ¬¡ï¼Œå› æ­¤D=1
 
 #4.2.4 Predict
 months_forecast  <- 2
@@ -97,5 +97,5 @@ plot(forecast(model, months_forecast), include = months_in_plot , xlab="Time",
 # Relative bias: 
 (26.401-25.764)/25.764*100
 
-
+# good work
 
