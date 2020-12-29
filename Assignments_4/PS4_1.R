@@ -2,22 +2,22 @@ setwd('C:/Users/ping ping/Desktop/Assignment/Assignment_04_hzp')
 library(ggplot2)
 library(dplyr)
 library(tidyr)
-#¼ÓÔØÃÀ¹ú°®ºÉ»ªÖİÎå¸ö¹Û²âÕ¾µÄ½µË®Êı¾İ
+#åŠ è½½ç¾å›½çˆ±è·åå·äº”ä¸ªè§‚æµ‹ç«™çš„é™æ°´æ•°æ®
 data4_1 <- read.csv('PRCP.csv',header = T)
 data4_1 <- as_tibble(data4_1)
 
 
 ### Boxplot
-#ÖğÈÕµÄ½µË®ÓĞºÜ¶à0Öµ£¬Òò´ËÏÈ½«Æä×ª»¯ÎªÖğÔÂµÄ½µË®£¬ÔÙ»æÖÆÏäÏßÍ¼
+#é€æ—¥çš„é™æ°´æœ‰å¾ˆå¤š0å€¼ï¼Œå› æ­¤å…ˆå°†å…¶è½¬åŒ–ä¸ºé€æœˆçš„é™æ°´ï¼Œå†ç»˜åˆ¶ç®±çº¿å›¾
 data4_11 <- data4_1 %>%
   mutate(y_m = as.character(paste(YEAR,MONTH,15,sep = "-"))) %>%
   mutate(group = paste(y_m,NAME)) %>%
   group_by(group) %>%
   summarize(PRCP_mon =  sum(PRCP,na.rm = TRUE)) %>%
   mutate(name = factor(gsub(" ","",substr(group,11,nchar(group))))) %>%
-#https://www.imooc.com/wenda/detail/585314 Ñ§Ï°ÁËÃüÁînchar(),¼ÆËã×Ö·û´®³¤¶È
-#https://blog.csdn.net/weixin_43718786/article/details/107614620 Ñ§Ï°ÁËÃüÁîgsub(),Ìæ»»×Ö·û´®ÖĞµÄÖ¸¶¨ÄÚÈİ
-#»æÍ¼  
+#https://www.imooc.com/wenda/detail/585314 å­¦ä¹ äº†å‘½ä»¤nchar(),è®¡ç®—å­—ç¬¦ä¸²é•¿åº¦
+#https://blog.csdn.net/weixin_43718786/article/details/107614620 å­¦ä¹ äº†å‘½ä»¤gsub(),æ›¿æ¢å­—ç¬¦ä¸²ä¸­çš„æŒ‡å®šå†…å®¹
+#ç»˜å›¾  
   ggplot(aes(x = name, y = PRCP_mon, fill = name)) +
   geom_boxplot() +
   labs(title="monthly total precipitation from 2005 to 2019", x="City", 
@@ -32,10 +32,10 @@ data4_11 <- data4_1 %>%
 data4_11
 
 ### Time series
-#½«Äê¡¢ÔÂ¡¢ÈÕ×éºÏ£¬×ª»¯ÎªÊ±¼ä
+#å°†å¹´ã€æœˆã€æ—¥ç»„åˆï¼Œè½¬åŒ–ä¸ºæ—¶é—´
 data4_12 <- data4_1 %>%
   mutate(DATE = as.Date(paste(YEAR,MONTH,DAY,sep = "-"))) %>%
-#»æÍ¼,ÓÉÓÚÊı¾İ½Ï¶àÇÒ½ÏÎªÏàËÆ£¬Òò´Ë½«Æä»æÖÆÔÚ¶à¸ö×ø±êÏµÖĞ
+#ç»˜å›¾,ç”±äºæ•°æ®è¾ƒå¤šä¸”è¾ƒä¸ºç›¸ä¼¼ï¼Œå› æ­¤å°†å…¶ç»˜åˆ¶åœ¨å¤šä¸ªåæ ‡ç³»ä¸­
   ggplot( aes(x=DATE, y=PRCP, color=NAME) ) + 
   geom_line() + 
   labs(title="precipitation from 2005 to 2019", x="Date", y="precipitation(mm)") +
@@ -51,14 +51,14 @@ data4_12
 
 
 ### Histogram
-#»ùÓÚÓëÏäÏßÍ¼ÏàÍ¬µÄÔ­Òò£¬Ö±·½Í¼Ò²Ê¹ÓÃÖğÔÂµÄ½µË®Êı¾İ
+#åŸºäºä¸ç®±çº¿å›¾ç›¸åŒçš„åŸå› ï¼Œç›´æ–¹å›¾ä¹Ÿä½¿ç”¨é€æœˆçš„é™æ°´æ•°æ®
 data4_13 <- data4_1 %>%
   mutate(y_m = as.character(paste(YEAR,MONTH,15,sep = "-"))) %>%
   mutate(group = paste(y_m,NAME)) %>%
   group_by(group) %>%
   summarize(PRCP_mon =  sum(PRCP,na.rm = TRUE)) %>%
   mutate(name = factor(gsub(" ","",substr(group,11,nchar(group))))) %>%
-#»æÍ¼
+#ç»˜å›¾
   ggplot(aes(x = PRCP_mon, fill = name)) +
   geom_histogram() +
   labs(title="monthly total precipitation from 2005 to 2019", x="monthly total precipitation(mm)", 
@@ -76,7 +76,7 @@ data4_13
 
 
 ### Scatter plot 
-#É¢µãÍ¼Ê¹ÓÃÖğÔÂµÄ½µË®Êı¾İ£¬Ñ¡Ôñ³ÇÊĞÎªROCKWELLCITYºÍSACCITY
+#æ•£ç‚¹å›¾ä½¿ç”¨é€æœˆçš„é™æ°´æ•°æ®ï¼Œé€‰æ‹©åŸå¸‚ä¸ºROCKWELLCITYå’ŒSACCITY
 data4_14 <- data4_1 %>%
   mutate(y_m = as.character(paste(YEAR,MONTH,15,sep = "-"))) %>%
   mutate(group = paste(y_m,NAME)) %>%
@@ -94,10 +94,10 @@ a <- ROC[,1]
 a[,2] <- SAC[,1]
 colnames(a) <- c('ROC','SAC')
 lm <- lm(SAC ~ ROC, data = a)
-#»æÍ¼
+#ç»˜å›¾
 plot_point <- a %>%
   ggplot(aes(x=ROC, y=SAC)) +
-#ÔÚggplotÖĞÌí¼Ó»Ø¹éÏß£ºhttps://blog.csdn.net/weixin_40575651/article/details/107575012?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-1.compare&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-1.compare
+#åœ¨ggplotä¸­æ·»åŠ å›å½’çº¿ï¼šhttps://blog.csdn.net/weixin_40575651/article/details/107575012?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-1.compare&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-1.compare
   geom_abline(slope = lm$coefficients[2], intercept = lm$coefficients[1], 
               color = "red", size = 1, alpha = 0.5) +
   geom_point(color="blue") +
@@ -114,11 +114,11 @@ plot_point
 
 
 ### Image plot
-#»æÖÆ½ñÄêÒ»ÔÂ·İÈ«ÇòµÄndvi£¨¹éÒ»»¯Ö²±»Ö¸Êı£©£¬Êı¾İÀ´Ô´ÎªGiovanni
+#ç»˜åˆ¶ä»Šå¹´ä¸€æœˆä»½å…¨çƒçš„ndviï¼ˆå½’ä¸€åŒ–æ¤è¢«æŒ‡æ•°ï¼‰ï¼Œæ•°æ®æ¥æºä¸ºGiovanni
 library(fields)
 library(maps) 
 library(RNetCDF)
-#¼ÓÔØRColorBrewer°ü£¬ÓÃÓÚ»æÖÆÂÌÉ«µÄ½¥±äÉ«£ºhttps://www.jianshu.com/p/4e6fb1269ece
+#åŠ è½½RColorBreweråŒ…ï¼Œç”¨äºç»˜åˆ¶ç»¿è‰²çš„æ¸å˜è‰²ï¼šhttps://www.jianshu.com/p/4e6fb1269ece
 library(RColorBrewer)
 ex.nc     <- open.nc("g4.subsetted.MOD13C2_006_CMG_0_05_Deg_Monthly_NDVI.20200101.180W_90S_180E_90N.nc")
 print.nc(ex.nc)
@@ -126,7 +126,7 @@ Lat <- var.get.nc(ex.nc, "lat")
 Lon <- var.get.nc(ex.nc, "lon")
 NDVI <- var.get.nc(ex.nc, "MOD13C2_006_CMG_0_05_Deg_Monthly_NDVI") 
 close.nc(ex.nc)
-#ndviÃ»ÓĞº£ÑóµÄÊı¾İ£¬´ËÍâÓÉÓÚMODIS·¶Î§ÎªÄÏ±±Î³60¡ã×óÓÒ£¬Òò´ËÄÏ±±¼«ÎŞÊı¾İ
+#ndviæ²¡æœ‰æµ·æ´‹çš„æ•°æ®ï¼Œæ­¤å¤–ç”±äºMODISèŒƒå›´ä¸ºå—åŒ—çº¬60Â°å·¦å³ï¼Œå› æ­¤å—åŒ—ææ— æ•°æ®
 image.plot(Lon, Lat, NDVI,
            col=brewer.pal(7,"Greens"),
            horizontal=T,useRaster=T,
@@ -145,7 +145,7 @@ map('world',add=T,lwd=0.75,col="black")
 box(lwd=2)
 
 
-
+# good work
 
 
 
