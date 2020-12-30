@@ -7,22 +7,22 @@ library("maps")
 
 #5.1.1
 #load Solar radiation,2.5 minutes
-#ÓÉÓÚÓĞ12¸ötifÎÄ¼ş£¬Òò´ËÓÃÁĞ±íÅúÁ¿¶ÁÈ¡Êı¾İ£¬ÔÙÇóÆ½¾ùÖµ
-#²Î¿¼ÁËhttps://bbs.csdn.net/topics/394380528
+#ç”±äºæœ‰12ä¸ªtifæ–‡ä»¶ï¼Œå› æ­¤ç”¨åˆ—è¡¨æ‰¹é‡è¯»å–æ•°æ®ï¼Œå†æ±‚å¹³å‡å€¼
+#å‚è€ƒäº†https://bbs.csdn.net/topics/394380528
 rlist_srad=list.files("C:/Users/ping ping/Desktop/Assignment/Assignment_05_hzp/wc2.1_2.5m_srad", pattern="tif$", full.names=T) 
-#¸øÓÃÓÚÑ­»·µÄbÒ»¸ö³õÊ¼Öµ
+#ç»™ç”¨äºå¾ªç¯çš„bä¸€ä¸ªåˆå§‹å€¼
 a <- raster("C:/Users/ping ping/Desktop/Assignment/Assignment_05_hzp/wc2.1_2.5m_srad/wc2.1_2.5m_srad_01.tif")
 b <- a
 for(i in rlist_srad){ 
   c <- raster(i) 
   b = c + b
 }
-#¼õÈ¥Ö®Ç°ÉèÖÃµÄ³õÊ¼Öµ
+#å‡å»ä¹‹å‰è®¾ç½®çš„åˆå§‹å€¼
 b = b-a
-#ÇóÆ½¾ùÖµ
+#æ±‚å¹³å‡å€¼
 srad <- b/12
 
-#Ê£ÓàÁ½¸ö±äÁ¿ºÍÉÏÊö¹ı³Ì»ù±¾Ò»ÖÂ
+#å‰©ä½™ä¸¤ä¸ªå˜é‡å’Œä¸Šè¿°è¿‡ç¨‹åŸºæœ¬ä¸€è‡´
 #load Precipitation, 2.5 minutes
 rlist_prec=list.files("C:/Users/ping ping/Desktop/Assignment/Assignment_05_hzp/wc2.1_2.5m_prec", pattern="tif$", full.names=T) 
 a <- raster("C:/Users/ping ping/Desktop/Assignment/Assignment_05_hzp/wc2.1_2.5m_prec/wc2.1_2.5m_prec_01.tif")
@@ -32,7 +32,7 @@ for(i in rlist_prec){
   b = c + b
 }
 b = b-a
-#½µË®²»ĞèÒªÇóÆ½¾ùÖµ£¬±£ÁôÄê½µË®¼´¿É
+#é™æ°´ä¸éœ€è¦æ±‚å¹³å‡å€¼ï¼Œä¿ç•™å¹´é™æ°´å³å¯
 prec <- b
 
 #load Wind speed, 2.5 minutes
@@ -50,39 +50,39 @@ wind <- b/12
 China_map <- readOGR("C:/Users/ping ping/Desktop/Assignment/Assignment_05_hzp/China_map", "bou2_4p")
 
 #plot Solar radiation,2.5 minutes
-#Ñ¡Ôñ´óÖÂÎªÖĞ¹úµÄ·¶Î§
+#é€‰æ‹©å¤§è‡´ä¸ºä¸­å›½çš„èŒƒå›´
 Crop_box <- c(75,140,15,55)
 srad_CN <- crop(srad, Crop_box)
-#Ìí¼ÓÑÚÄ¤
-#maskº¯ÊıÀ´×ÔÍõ³¬Í¬Ñ§
+#æ·»åŠ æ©è†œ
+#maskå‡½æ•°æ¥è‡ªç‹è¶…åŒå­¦
 srad_CN_m <- mask(srad_CN,China_map)
-#»æÍ¼
+#ç»˜å›¾
 plot(srad_CN_m,main="annual mean solar radiation in China")
 maps::map('world',add=T)
 
 #plot Precipitation, 2.5 minutes
 prec_CN <- crop(prec, Crop_box)
-#Ìí¼ÓÑÚÄ¤
+#æ·»åŠ æ©è†œ
 prec_CN_m <- mask(prec_CN,China_map)
-#»æÍ¼
+#ç»˜å›¾
 plot(prec_CN_m,main="annual total precipitation in China")
 maps::map('world',add=T)
 
 #plot Wind speed, 2.5 minutes
 wind_CN <- crop(wind, Crop_box)
-#Ìí¼ÓÑÚÄ¤
+#æ·»åŠ æ©è†œ
 wind_CN_m <- mask(wind_CN,China_map)
-#»æÍ¼
+#ç»˜å›¾
 plot(wind_CN_m,main="annual mean wind speed in China")
 maps::map('world',add=T)
 
 
 #5.1.3 
-#´ÓÍøÉÏµÃµ½µÄ×ÊÁÏÏÔÊ¾£¬·¢µç·çËÙµÄãĞÖµÔÚ3m/s-4m/s×óÓÒ
+#ä»ç½‘ä¸Šå¾—åˆ°çš„èµ„æ–™æ˜¾ç¤ºï¼Œå‘ç”µé£é€Ÿçš„é˜ˆå€¼åœ¨3m/s-4m/så·¦å³
 wind_CN_m1 <- wind_CN_m
-#Ñ°ÕÒ·çÁ¦´óÓÚ3m/sµÄÇøÓò
+#å¯»æ‰¾é£åŠ›å¤§äº3m/sçš„åŒºåŸŸ
 wind_CN_m1[which(wind_CN_m1@data@values < 3)] <- NA
-#»æÍ¼
+#ç»˜å›¾
 plot(wind_CN_m1,main ='Possible sites for wind farms in China')
 maps::map('world',add=T)
 
@@ -90,14 +90,17 @@ maps::map('world',add=T)
 
 #5.1.4
 srad_CN_m1 <- srad_CN_m
-#¹â·ü·¢µçÕ¾µÄÉèÖÃÎªÄê½µÓêÁ¿Ğ¡ÓÚ400ml£¬Ì«Ñô·øÉä´óÓÚ16000kJ/m^2/day
+#å…‰ä¼å‘ç”µç«™çš„è®¾ç½®ä¸ºå¹´é™é›¨é‡å°äº400mlï¼Œå¤ªé˜³è¾å°„å¤§äº16000kJ/m^2/day
 srad_CN_m1[which(prec_CN_m@data@values > 400|srad_CN_m1@data@values < 16000)] <- NA
-#»æÍ¼
+#ç»˜å›¾
 plot(srad_CN_m1,main ='Possible sites for photovoltaics farms in China')
 maps::map('world',add=T)
 
  
-
-
-
-
+# MingYANG noticed:
+# you did a very good work
+# but a serious problem happen that you didn`t chose the right China map
+# please re-check your plot any time you want to draw a China map using foreign database
+# in you plot, southern Tibet is missing 
+# this is the reason I can`t offer you full mark in this question
+# the end
