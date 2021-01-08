@@ -36,3 +36,7 @@ end do
 close(u)
 
 end program Main
+
+! MingYANG noticed:
+! good work but please print the result in "(f8.1)" format
+! the end
